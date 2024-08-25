@@ -2,8 +2,8 @@ import os
 from pymongo import MongoClient
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
+# Load environment variables from the root .env file
+load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 class NoSQLDatabaseManager:
     def __init__(self, db_name="DatabaseProject"):

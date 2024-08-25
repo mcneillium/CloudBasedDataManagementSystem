@@ -10,7 +10,7 @@ nosql_manager = NoSQLDatabaseManager()
 # Create the main window
 root = tk.Tk()
 root.title("Paul Martin McNeill's Database Management System")
-root.geometry("650x600")
+root.geometry("700x800")
 
 # Function to switch between SQL and NoSQL panels
 def switch_panel(panel):
@@ -58,9 +58,9 @@ def add_nosql_document():
     name = nosql_name_entry.get()
     email = nosql_email_entry.get()
     if name and email:
-        user_data = {"": name, "": email}
+        user_data = {"name": name, "email": email}
         nosql_manager.insert_user(user_data)
-        messagebox.showinfo("Info", "User added to NoSQL database successfully.")
+        messagebox.showinfo("Info", "Document added to NoSQL database successfully.")
         nosql_name_entry.delete(0, tk.END)
         nosql_email_entry.delete(0, tk.END)
     else:
@@ -140,13 +140,13 @@ nosql_instructions.pack(pady=5)
 
 nosql_name_entry = tk.Entry(nosql_frame, width=40)
 nosql_name_entry.pack(pady=5)
-nosql_name_entry.insert(0, "Enter Name")
+nosql_name_entry.insert(0, "")
 nosql_name_entry_label = tk.Label(nosql_frame, text="Enter the name to be included in the document.", font=("Helvetica", 10, "italic"))
 nosql_name_entry_label.pack()
 
 nosql_email_entry = tk.Entry(nosql_frame, width=40)
 nosql_email_entry.pack(pady=5)
-nosql_email_entry.insert(0, "Enter Email")
+nosql_email_entry.insert(0, "")
 nosql_email_entry_label = tk.Label(nosql_frame, text="Enter the email to be included in the document.", font=("Helvetica", 10, "italic"))
 nosql_email_entry_label.pack()
 
