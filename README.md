@@ -1,3 +1,4 @@
+
 # Cloud-Based Data Management System
 
 ## Overview
@@ -26,21 +27,26 @@ This project demonstrates a cloud-based database management system implemented u
 1. Navigate to the `sql/` directory.
    ```bash
    cd sql
+   ```
 
-2. Run the sql_db.py script.
+2. Run the `sql_db.py` script.
+   ```bash
    python sql_db.py
+   ```
 
-   **NoSQL Database**
+### NoSQL Database
 
-1. Ensure that MongoDB is running on your local machine.
+1. Ensure that MongoDB is running on your local machine or use MongoDB Atlas for a cloud-hosted solution.
 
 2. Navigate to the `nosql/` directory.
-    ```bash
-    cd nosql
+   ```bash
+   cd nosql
+   ```
 
-3. Run the nosql_db.py script.
+3. Run the `nosql_db.py` script.
+   ```bash
    python nosql_db.py
-
+   ```
 
 ### Contributions
 

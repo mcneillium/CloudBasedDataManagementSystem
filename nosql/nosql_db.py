@@ -1,37 +1,51 @@
+import os
 from pymongo import MongoClient
+from dotenv import load_dotenv
 
-# This class manages interactions with a MongoDB NoSQL database.
+# Load environment variables from .env file
+load_dotenv()
+
 class NoSQLDatabaseManager:
-    def __init__(self, db_name="cloud_data", collection_name="users"):
-        # Initialize the connection to the MongoDB database.
-        self.client = MongoClient("mongodb://localhost:27017/")
+    def __init__(self, db_name="DatabaseProject"):
+        # Get the connection string from the environment variable
+        mongo_uri = os.getenv('MONGO_URI')
+        if not mongo_uri:
+            raise ValueError("No MongoDB URI found. Please set the MONGO_URI environment variable.")
+        
+        self.client = MongoClient(mongo_uri)
         self.db = self.client[db_name]
-        self.collection = self.db[collection_name]
+        self.collection = self.db["users"]  # Use the "users" collection in your database
 
     def insert_user(self, user_data):
-        # Insert a new user document into the users collection.
-        try:
-            self.collection.insert_one(user_data)
-            print("User inserted:", user_data)
-        except Exception as e:
-            print("Error inserting user:", e)
+        """Insert a new user document into the NoSQL database."""
+        self.collection.insert_one(user_data)
 
     def fetch_users(self):
-        # Fetch all users from the users collection.
+        """Fetch all user documents from the NoSQL database."""
         return list(self.collection.find())
 
+    def clear_users(self):
+        """Clear all user documents from the NoSQL database."""
+        self.collection.delete_many({})
+
     def close(self):
-        # Close the connection to the MongoDB database.
+        """Close the connection to the NoSQL database."""
         self.client.close()
 
 # Example usage:
 if __name__ == "__main__":
-    db_manager = NoSQLDatabaseManager()
-    db_manager.insert_user({"name": "Alice", "email": "alice@example.com"})
-    db_manager.insert_user({"name": "Bob", "email": "bob@example.com"})
-
-    users = db_manager.fetch_users()
+    nosql_manager = NoSQLDatabaseManager()
+    
+    # Insert a new user
+    nosql_manager.insert_user({"name": "Alice", "email": "alice@example.com"})
+    
+    # Fetch and print all users
+    users = nosql_manager.fetch_users()
     for user in users:
         print(user)
-
-    db_manager.close()
+    
+    # Clear all users
+    nosql_manager.clear_users()
+    
+    # Close the connection
+    nosql_manager.close()
