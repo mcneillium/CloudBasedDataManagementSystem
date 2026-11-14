@@ -1,56 +1,44 @@
-
 # Cloud-Based Data Management System
 
-## Overview
+[![tests](https://github.com/mcneillium/CloudBasedDataManagementSystem/actions/workflows/tests.yml/badge.svg)](https://github.com/mcneillium/CloudBasedDataManagementSystem/actions/workflows/tests.yml)
 
-This project demonstrates a cloud-based database management system implemented using both SQL and NoSQL databases. The SQL component is handled by SQLite, while the NoSQL component is managed using MongoDB. This system is designed to showcase how to interact with different types of databases, insert and retrieve data, and manage database connections in a cloud environment.
+The same small "users" dataset managed two ways: in a relational database
+(SQLite) and in a document database (MongoDB, local or Atlas), with a Tkinter
+GUI to insert and list records in each.
 
-## Project Structure
+Case study: [paulmartinmcneill.com/projects/cloud-data-management](https://paulmartinmcneill.com/projects/cloud-data-management/)
 
-- **`sql/`**: Contains the SQL database management system implementation using SQLite.
-- **`nosql/`**: Contains the NoSQL database management system implementation using MongoDB.
+## What it shows
 
-## Features
+- **SQL (`sql/sql_db.py`):** a `users` table with a unique email constraint;
+  inserting a duplicate email is refused and reported.
+- **NoSQL (`nosql/nosql_db.py`):** a `users` collection in MongoDB; insert,
+  list and clear documents.
+- **Configuration:** the MongoDB connection string is read from the
+  `MONGO_URI` environment variable (or a local `.env` file), never from code.
+- **Tests:** the SQL manager is tested against an in-memory SQLite database
+  and the NoSQL manager against `mongomock`, so the tests need no database
+  server. They run on every push.
 
-- **SQL Database Management**:
-  - Implemented with SQLite.
-  - Supports creating tables, inserting records, and fetching data.
-  
-- **NoSQL Database Management**:
-  - Implemented with MongoDB.
-  - Supports inserting documents and retrieving data.
+## Run it
 
-## How to Run
+Python 3.10 or later.
 
-### SQL Database
+```bash
+git clone https://github.com/mcneillium/CloudBasedDataManagementSystem.git
+cd CloudBasedDataManagementSystem
+pip install -r requirements.txt
+cp .env.example .env       # then put your own MongoDB connection string in .env
+python main_gui.py         # opens the GUI (needs Tkinter)
+```
 
-1. Navigate to the `sql/` directory.
-   ```bash
-   cd sql
-   ```
+Run the tests:
 
-2. Run the `sql_db.py` script.
-   ```bash
-   python sql_db.py
-   ```
+```bash
+pip install -r requirements-dev.txt
+python -m pytest -q
+```
 
-### NoSQL Database
+## Licence
 
-1. Ensure that MongoDB is running on your local machine or use MongoDB Atlas for a cloud-hosted solution.
-
-2. Navigate to the `nosql/` directory.
-   ```bash
-   cd nosql
-   ```
-
-3. Run the `nosql_db.py` script.
-   ```bash
-   python nosql_db.py
-   ```
-
-### Contributions
-
-Contributions are welcome! Feel free to submit pull requests with additional features or improvements.
-
-### License
-This project is licensed under the MIT License.
+MIT, see [LICENSE](LICENSE).

@@ -17,11 +17,14 @@ class SQLDatabaseManager:
 
     def insert_user(self, name, email):
         # Insert a new user into the users table.
+        # Returns True if inserted, False if the email is already taken.
         try:
             self.cursor.execute("INSERT INTO users (name, email) VALUES (?, ?)", (name, email))
             self.connection.commit()
+            return True
         except sqlite3.IntegrityError:
             print(f"Error: A user with the email {email} already exists.")
+            return False
 
     def fetch_users(self):
         # Fetch all users from the users table.

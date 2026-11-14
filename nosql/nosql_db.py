@@ -6,13 +6,16 @@ from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 class NoSQLDatabaseManager:
-    def __init__(self, db_name="DatabaseProject"):
-        # Get the connection string from the environment variable
-        mongo_uri = os.getenv('MONGO_URI')
-        if not mongo_uri:
-            raise ValueError("No MongoDB URI found. Please set the MONGO_URI environment variable.")
-        
-        self.client = MongoClient(mongo_uri)
+    def __init__(self, db_name="DatabaseProject", client=None):
+        # A client can be passed in (tests use mongomock); otherwise connect
+        # using the MONGO_URI environment variable, read from .env if present.
+        if client is None:
+            mongo_uri = os.getenv('MONGO_URI')
+            if not mongo_uri:
+                raise ValueError("No MongoDB URI found. Please set the MONGO_URI environment variable.")
+            client = MongoClient(mongo_uri)
+
+        self.client = client
         self.db = self.client[db_name]
         self.collection = self.db["users"]  # Use the "users" collection in your database
 
