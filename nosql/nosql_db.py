@@ -1,5 +1,6 @@
 import os
 from pymongo import MongoClient
+from pymongo.errors import DuplicateKeyError
 from dotenv import load_dotenv
 
 # Load environment variables from the root .env file
@@ -18,10 +19,20 @@ class NoSQLDatabaseManager:
         self.client = client
         self.db = self.client[db_name]
         self.collection = self.db["users"]  # Use the "users" collection in your database
+        # MongoDB has no table schema, so uniqueness comes from an index. This
+        # gives the collection the same rule as the SQL table's UNIQUE email.
+        self.collection.create_index("email", unique=True)
 
     def insert_user(self, user_data):
-        """Insert a new user document into the NoSQL database."""
-        self.collection.insert_one(user_data)
+        """Insert a new user document.
+
+        Returns True if inserted, False if the email is already taken.
+        """
+        try:
+            self.collection.insert_one(dict(user_data))
+            return True
+        except DuplicateKeyError:
+            return False
 
     def fetch_users(self):
         """Fetch all user documents from the NoSQL database."""

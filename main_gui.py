@@ -30,7 +30,10 @@ def add_sql_user():
     name = sql_name_entry.get()
     email = sql_email_entry.get()
     if name and email:
-        sql_manager.insert_user(name, email)
+        sql_manager.create_table()  # safe to repeat: CREATE TABLE IF NOT EXISTS
+        if not sql_manager.insert_user(name, email):
+            messagebox.showerror("Not added", f"A user with the email {email} already exists.")
+            return
         messagebox.showinfo("Info", "User added to SQL database successfully.")
         sql_name_entry.delete(0, tk.END)
         sql_email_entry.delete(0, tk.END)
@@ -59,7 +62,9 @@ def add_nosql_document():
     email = nosql_email_entry.get()
     if name and email:
         user_data = {"name": name, "email": email}
-        nosql_manager.insert_user(user_data)
+        if not nosql_manager.insert_user(user_data):
+            messagebox.showerror("Not added", f"A document with the email {email} already exists.")
+            return
         messagebox.showinfo("Info", "Document added to NoSQL database successfully.")
         nosql_name_entry.delete(0, tk.END)
         nosql_email_entry.delete(0, tk.END)

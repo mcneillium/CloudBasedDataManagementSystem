@@ -23,7 +23,7 @@ class SQLDatabaseManager:
             self.connection.commit()
             return True
         except sqlite3.IntegrityError:
-            print(f"Error: A user with the email {email} already exists.")
+            # The UNIQUE constraint on email refused a duplicate.
             return False
 
     def fetch_users(self):

@@ -33,3 +33,11 @@ def test_nosql_requires_a_connection_string(monkeypatch):
         assert "MONGO_URI" in str(e)
     else:
         raise AssertionError("expected ValueError without MONGO_URI")
+
+
+def test_nosql_refuses_a_duplicate_email_like_sql():
+    # The unique index gives the collection the same rule as the SQL table.
+    db = NoSQLDatabaseManager(client=mongomock.MongoClient())
+    assert db.insert_user({"name": "Bob", "email": "bob@example.com"}) is True
+    assert db.insert_user({"name": "Bob again", "email": "bob@example.com"}) is False
+    assert len(db.fetch_users()) == 1
