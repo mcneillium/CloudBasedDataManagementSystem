@@ -26,6 +26,7 @@ def test_nosql_insert_fetch_and_clear():
 def test_nosql_requires_a_connection_string(monkeypatch):
     monkeypatch.delenv("MONGO_URI", raising=False)
     import nosql.nosql_db as mod
+
     monkeypatch.setattr(mod.os, "getenv", lambda k, d=None: None)
     try:
         NoSQLDatabaseManager()

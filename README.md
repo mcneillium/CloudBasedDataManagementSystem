@@ -27,21 +27,16 @@ Case study: [paulmartinmcneill.com/projects/cloud-data-management](https://paulm
 
 ## Run it
 
-Python 3.10 or later.
+You need [uv](https://docs.astral.sh/uv/), which fetches the right Python (3.13
+or later, with Tkinter included) and every dependency from the lock file.
 
 ```bash
 git clone https://github.com/mcneillium/CloudBasedDataManagementSystem.git
 cd CloudBasedDataManagementSystem
-pip install -r requirements.txt
 cp .env.example .env       # then put your own MongoDB connection string in .env
-python main_gui.py         # opens the GUI (needs Tkinter)
-```
-
-Run the tests:
-
-```bash
-pip install -r requirements-dev.txt
-python -m pytest -q
+uv run main_gui.py         # opens the GUI
+uv run pytest              # runs the tests (no database server needed)
+uv run mypy                # checks the types
 ```
 
 ## Changes (November 2026)
@@ -51,6 +46,14 @@ python -m pytest -q
 - The MongoDB collection now refuses duplicate emails too (unique index), so
   the two stores follow the same rule. A test covers it.
 - Adding a SQL user no longer fails if "Create Table" hasn't been clicked first.
+
+### Second round (November 2026): current tooling
+
+- Both database managers are **typed** and checked by mypy in strict mode.
+- **uv** manages Python and the dependencies from one `pyproject.toml` and a
+  lock file, replacing the two requirements files. **Ruff** lints and formats.
+- The tests, type check and lint run on **Python 3.13, 3.14 and 3.15** on
+  every push. Dependabot proposes updates once a month.
 
 ## Licence
 
